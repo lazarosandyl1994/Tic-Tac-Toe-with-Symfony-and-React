@@ -1,3 +1,184 @@
-body {
-    background-color: lightgray;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container-column {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+}
+
+.container-row {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+}
+
+h1 {
+    font-size: 5rem;
+    margin-bottom: 0.5em;
+}
+
+h2 {
+    margin-top: 1em;
+    font-size: 2rem;
+    margin-bottom: 0.5em;
+}
+
+.play-area {
+    display: grid;
+    width: 300px;
+    height: 300px;
+    grid-template-columns: auto auto auto;
+}
+
+.block {
+    display: flex;
+    width: 100px;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-weight: bold;
+    border: 3px solid black;
+    transition: background 0.2s ease-in-out;
+}
+
+.block:hover {
+    cursor: pointer;
+    background: #0ff30f;
+}
+
+.occupied:hover {
+    background: #ff3a3a;
+}
+
+.win {
+    background: #0ff30f;
+}
+
+.win:hover {
+    background: #0ff30f;
+}
+
+#block_0,
+#block_1,
+#block_2 {
+    border-top: none;
+}
+
+#block_0,
+#block_3,
+#block_6 {
+    border-left: none;
+}
+
+#block_6,
+#block_7,
+#block_8 {
+    border-bottom: none;
+}
+
+#block_2,
+#block_5,
+#block_8 {
+    border-right: none;
+}
+
+button {
+    outline: none;
+    border: none;
+    padding: 50px 50px;
+    font-size: 2rem;
+    font-weight: bold;
+    background: none;
+}
+
+.button {
+    outline: none;
+    border: 4px solid green;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    background: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.button:hover {
+    cursor: pointer;
+    background: green;
+    color: white;
+}
+
+
+.playerWin {
+    color: green;
+}
+
+.computerWin {
+    color: red;
+}
+
+.draw {
+    color: orangered;
+}
+
+@media only screen and (max-width: 600px) {
+
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 0.5em;
+    }
+
+    h2 {
+        margin-top: 1em;
+        font-size: 1.3rem;
+    }
+}
+
+.mt-15 {
+    margin-top: 15px;
+}
+
+.ml-15 {
+    margin-left: 15px;
+}
+
+.mr-15 {
+    margin-right: 15px;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    padding: 20px 25px;
+}
+
+/* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Add some padding inside the card container */
+.container-card {
+    padding: 2px 16px;
+}
+
+.d-none {
+    display: none;
 }
