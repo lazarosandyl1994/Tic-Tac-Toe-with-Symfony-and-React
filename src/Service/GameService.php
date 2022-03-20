@@ -5,7 +5,6 @@ namespace App\Service;
 use App\Entity\Game;
 use App\Repository\GameRepository;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class GameService
 {
@@ -117,7 +116,7 @@ class GameService
      * @param Request $request
      * @return array
      */
-    public function playMove(int $id, Request $request): array
+    public function playMove(int $id, Request $request, bool $vsAI = false): array
     {
         $currentGame = $this->gameRepository->find($id);
 
@@ -133,7 +132,7 @@ class GameService
      * @param Game $currentGame
      * @return array
      */
-    private function updateGame(Request $request, Game $currentGame): array
+    public function updateGame(Request $request, Game $currentGame): array
     {
         $content = json_decode($request->getContent());
 
@@ -171,7 +170,7 @@ class GameService
      * @param bool $nullable
      * @return array
      */
-    private function toArray(string $cells, bool $nullable = false): array
+    public function toArray(string $cells, bool $nullable = false): array
     {
         $cellsAux = [];
         for ($i = 0; $i < 9; $i++) {
@@ -191,7 +190,7 @@ class GameService
      * @param bool $nullable
      * @return string
      */
-    private function toString(array $cells, bool $nullable = false): string
+    public function toString(array $cells, bool $nullable = false): string
     {
         $cellsAux = "";
 

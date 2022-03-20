@@ -6,28 +6,24 @@ import Swal from "sweetalert2";
 
 
 const Game = () => {
-    const [newGameTwoPlayers, setNewGameTwoPlayers] = useState(true);
-    const [newGameVsComputer, setNewGameVsComputer] = useState(true);
+    const [newGame, setNewGame] = useState(true);
+    const [playerVs, setPlayerVs] = useState("player");
     const [currentGameIndex, setCurrentGameIndex] = useState(0);
     const [xWon, setXWon] = useState(0);
     const [oWon, setOWon] = useState(0);
     const [draws, setDraws] = useState(0);
 
     const handleClickGameTwoPlayers = () => {
-        if (newGameTwoPlayers) {
-            createNewGame();
-        } else {
-            setNewGameTwoPlayers(!newGameTwoPlayers);
-        }
+        createNewGame();
+        setPlayerVs("player");
+        setNewGame(!newGame);
 
     }
 
     const handleClickGameVsComputer = () => {
-        if (newGameVsComputer) {
-            createNewGame();
-        } else {
-            setNewGameVsComputer(!newGameVsComputer);
-        }
+        createNewGame();
+        setPlayerVs("computer");
+        setNewGame(!newGame);
     }
 
     const incrementXWon = () => {
@@ -50,7 +46,7 @@ const Game = () => {
                     setXWon(response.data.xWon);
                     setOWon(response.data.oWon);
                     setDraws(response.data.draws);
-                    setNewGameTwoPlayers(false);
+                    setNewGame(false);
                     Swal.fire({
                         icon: 'success',
                         title: 'Juego creado exitosamente',
@@ -71,9 +67,12 @@ const Game = () => {
     return (
         <div>
             {
-                newGameTwoPlayers && newGameVsComputer
+                newGame
                     ?
-                    <Buttons onClickTwoPlayers={() => handleClickGameTwoPlayers()}/>
+                    <Buttons
+                        onClickTwoPlayers={() => handleClickGameTwoPlayers()}
+                        onClickVsComputer={() => handleClickGameVsComputer()}
+                    />
                     :
                     <Board
                         gameIndex={currentGameIndex}
@@ -83,6 +82,7 @@ const Game = () => {
                         incrementO={() => incrementOWon()}
                         draws={draws}
                         incrementD={() => incrementDraws()}
+                        playVs={playerVs}
                     />
             }
         </div>

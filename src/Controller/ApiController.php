@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\AIGameService;
 use App\Service\GameService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,9 +16,15 @@ class ApiController extends AbstractController
      */
     public $gameService;
 
-    public function __construct(GameService $gameService)
+    /**
+     * @var AIGameService
+     */
+    private $aIGameService;
+
+    public function __construct(GameService $gameService, AIGameService $aIGameService)
     {
         $this->gameService = $gameService;
+        $this->aIGameService = $aIGameService;
     }
 
     /**
@@ -33,6 +40,13 @@ class ApiController extends AbstractController
      */
     public function edit(Request $request, int $id): Response
     {
-        return $this->json($this->gameService->playMove($id, $request));
+        $content = json_decode($request->getContent());
+
+        if($content->playVs == "player")
+        {
+            return $this->json($this->gameService->playMove($id, $request));
+        } else {
+            return $this->json($this->aIGameService->playMove($id, $request));
+        }
     }
 }

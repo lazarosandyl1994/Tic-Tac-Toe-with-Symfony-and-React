@@ -8,7 +8,7 @@ const Board = (props) => {
     const [status, setStatus] = useState("Turno del jugador X");
 
     const handleClick = (cellIndex) => {
-        axios.patch('/api/' + props.gameIndex, {cell: cellIndex})
+        axios.patch('/api/' + props.gameIndex, {cell: cellIndex, playVs: props.playVs})
             .then(function (response) {
 
                 if (response.data.next) {
@@ -93,7 +93,7 @@ const Board = (props) => {
 
     return (
         <div className="container-column">
-            <h1>Juego entre 2 jugadores</h1>
+            <h1>{props.playVs === "player" ? "Juego entre 2 jugadores" : "Juego vs Computadora"}</h1>
             <div className="play-area">
                 <div id="block_0" className="block">{renderSquare(0)}</div>
                 <div id="block_1" className="block">{renderSquare(1)}</div>
