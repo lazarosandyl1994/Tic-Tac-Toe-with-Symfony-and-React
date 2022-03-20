@@ -4,11 +4,10 @@ namespace App\Service;
 
 use App\Entity\Game;
 use App\Repository\GameRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class GameService extends AbstractController
+class GameService
 {
     /**
      * @var GameRepository
@@ -27,7 +26,7 @@ class GameService extends AbstractController
      * @param Game $game
      * @return bool
      */
-    private function allCellsAreFilled(Game $game): bool
+    public function allCellsAreFilled(Game $game): bool
     {
         $cells = $this->toArray($game->getCells());
         foreach ($cells as $cell) {
@@ -52,21 +51,21 @@ class GameService extends AbstractController
     }
 
     /**
-     * @return Response
+     * @return array
      */
-    public function createNewGame(): Response
+    public function createNewGame(): array
     {
         $game = new Game();
         $game->setCells("---------");
         $game->setWinner("-");
         $game->setNext("X");
 
-        return $this->json([
+        return [
             'game_id' => $this->gameRepository->add($game)->getId(),
-            'xWinned' => $this->gameRepository->getGamesWinnedBy('X'),
-            'oWinned' => $this->gameRepository->getGamesWinnedBy('O'),
-            'draws' => $this->gameRepository->getGamesWinnedBy('D'),
-        ]);
+            'xWon' => $this->gameRepository->getGamesWonBy('X'),
+            'oWon' => $this->gameRepository->getGamesWonBy('O'),
+            'draws' => $this->gameRepository->getGamesWonBy('D'),
+        ];
     }
 
     /**
@@ -116,14 +115,14 @@ class GameService extends AbstractController
     /**
      * @param int $id
      * @param Request $request
-     * @return Response
+     * @return array
      */
-    public function playMove(int $id, Request $request): Response
+    public function playMove(int $id, Request $request): array
     {
         $currentGame = $this->gameRepository->find($id);
 
         if (!$currentGame) {
-            return $this->json(['status' => 404, 'message' => 'Game not found']);
+            return ['status' => 404, 'message' => 'Game not found'];
         }
 
         return $this->updateGame($request, $currentGame);
@@ -132,18 +131,18 @@ class GameService extends AbstractController
     /**
      * @param Request $request
      * @param Game $currentGame
-     * @return Response
+     * @return array
      */
-    private function updateGame(Request $request, Game $currentGame): Response
+    private function updateGame(Request $request, Game $currentGame): array
     {
         $content = json_decode($request->getContent());
 
         if($this->isThereAWinner($currentGame) || $this->allCellsAreFilled($currentGame)) {
-            return $this->json([
+            return [
                 'status' => 400,
                 'winner' => $this->isThereAWinner($currentGame),
                 'message' => 'Game is over'
-            ]);
+            ];
         }
 
         if ($canBePlayed = $this->canBePlayedMove($currentGame, $content->cell)) {
@@ -159,12 +158,12 @@ class GameService extends AbstractController
 
         $newGame = $this->gameRepository->update($currentGame);
 
-        return $this->json([
+        return [
             'next' => $newGame->getNext(),
             'cells' => $this->toArray($newGame->getCells(),true),
             'winner' => $newGame->getWinner(),
             'canBePlayed' => $canBePlayed
-        ]);
+        ];
     }
 
     /**

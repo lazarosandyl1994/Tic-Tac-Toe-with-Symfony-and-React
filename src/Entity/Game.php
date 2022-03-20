@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GameRepository;
+use App\Traits\Stubable;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Game
 {
+    use Stubable;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

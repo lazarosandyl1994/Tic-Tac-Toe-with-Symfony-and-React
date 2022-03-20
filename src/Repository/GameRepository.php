@@ -41,7 +41,7 @@ class GameRepository extends ServiceEntityRepository
         return $entity;
     }
 
-    public function getGamesWinnedBy(string $player): int
+    public function getGamesWonBy(string $player): int
     {
         $qb = $this->createQueryBuilder('g');
         $qb->select('count(g.id)');

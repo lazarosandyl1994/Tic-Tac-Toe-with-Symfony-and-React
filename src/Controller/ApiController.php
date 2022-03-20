@@ -25,7 +25,7 @@ class ApiController extends AbstractController
      */
     public function new(): Response
     {
-        return $this->gameService->createNewGame();
+        return $this->json($this->gameService->createNewGame());
     }
 
     /**
@@ -33,6 +33,6 @@ class ApiController extends AbstractController
      */
     public function edit(Request $request, int $id): Response
     {
-        return $this->gameService->playMove($id, $request);
+        return $this->json($this->gameService->playMove($id, $request));
     }
 }

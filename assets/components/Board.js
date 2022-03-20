@@ -108,8 +108,8 @@ const Board = (props) => {
             <div className="card mt-15 mb-15">
                 <div className="container-card">
                     <h4>Tabla resumen de los juegos históricos:</h4>
-                    <p>Juegos ganados por el jugador "X": {props.xWinned}</p>
-                    <p>Juegos ganados por el "O": {props.oWinned}</p>
+                    <p>Juegos ganados por el jugador "X": {props.xWon}</p>
+                    <p>Juegos ganados por el "O": {props.oWon}</p>
                     <p>Juegos empatados: {props.draws}</p>
                 </div>
             </div>

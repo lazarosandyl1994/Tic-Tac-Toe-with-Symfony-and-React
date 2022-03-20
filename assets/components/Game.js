@@ -9,8 +9,8 @@ const Game = () => {
     const [newGameTwoPlayers, setNewGameTwoPlayers] = useState(true);
     const [newGameVsComputer, setNewGameVsComputer] = useState(true);
     const [currentGameIndex, setCurrentGameIndex] = useState(0);
-    const [xWinned, setXWinned] = useState(0);
-    const [oWinned, setOWinned] = useState(0);
+    const [xWon, setXWon] = useState(0);
+    const [oWon, setOWon] = useState(0);
     const [draws, setDraws] = useState(0);
 
     const handleClickGameTwoPlayers = () => {
@@ -30,12 +30,12 @@ const Game = () => {
         }
     }
 
-    const incrementXWinned = () => {
-        setXWinned(xWinned + 1);
+    const incrementXWon = () => {
+        setXWon(xWon + 1);
     }
 
-    const incrementOWinned = () => {
-        setOWinned(oWinned + 1);
+    const incrementOWon = () => {
+        setOWon(oWon + 1);
     }
 
     const incrementDraws = () => {
@@ -47,8 +47,8 @@ const Game = () => {
             .then(function (response) {
                 if (response.data.game_id) {
                     setCurrentGameIndex(response.data.game_id);
-                    setXWinned(response.data.xWinned);
-                    setOWinned(response.data.oWinned);
+                    setXWon(response.data.xWon);
+                    setOWon(response.data.oWon);
                     setDraws(response.data.draws);
                     setNewGameTwoPlayers(false);
                     Swal.fire({
@@ -77,10 +77,10 @@ const Game = () => {
                     :
                     <Board
                         gameIndex={currentGameIndex}
-                        xWinned={xWinned}
-                        incrementX={() => incrementXWinned()}
-                        oWinned={oWinned}
-                        incrementO={() => incrementOWinned()}
+                        xWon={xWon}
+                        incrementX={() => incrementXWon()}
+                        oWon={oWon}
+                        incrementO={() => incrementOWon()}
                         draws={draws}
                         incrementD={() => incrementDraws()}
                     />
