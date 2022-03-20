@@ -11,7 +11,9 @@ const Board = (props) => {
         axios.patch('/api/' + props.gameIndex, {cell: cellIndex})
             .then(function (response) {
 
-                setStatus("Turno del jugador " + response.data.next);
+                if (response.data.next) {
+                    setStatus("Turno del jugador " + response.data.next);
+                }
 
                 if (response.data.status && response.data.status === 404) {
                     Swal.fire({
@@ -44,7 +46,7 @@ const Board = (props) => {
                             props.incrementX();
                             Swal.fire({
                                 icon: 'success',
-                                title: status,
+                                title: 'Ganó el jugador X',
                                 showConfirmButton: true
                             })
                             break;
@@ -53,7 +55,7 @@ const Board = (props) => {
                             props.incrementO();
                             Swal.fire({
                                 icon: 'success',
-                                title: status,
+                                title: 'Ganó el jugador O',
                                 showConfirmButton: true
                             })
                             break;
@@ -62,7 +64,7 @@ const Board = (props) => {
                             props.incrementD();
                             Swal.fire({
                                 icon: 'success',
-                                title: status,
+                                title: 'El juego terminó en empate',
                                 showConfirmButton: true
                             })
                             break;
@@ -111,7 +113,7 @@ const Board = (props) => {
                     <p>Juegos empatados: {props.draws}</p>
                 </div>
             </div>
-            <h3 className="status mt-15">{status}</h3>
+            <h3 className="mt-15">{status}</h3>
         </div>
     );
 
