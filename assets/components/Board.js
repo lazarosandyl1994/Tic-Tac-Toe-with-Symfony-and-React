@@ -93,7 +93,7 @@ const Board = (props) => {
 
     return (
         <div className="container-column">
-            <h1>{props.playVs === "player" ? "Juego entre 2 jugadores" : "Juego vs Computadora"}</h1>
+            <h1>{props.playVs === "player" ? "Juego entre jugadores alternos" : "Juego vs Computadora"}</h1>
             <div className="play-area">
                 <div id="block_0" className="block">{renderSquare(0)}</div>
                 <div id="block_1" className="block">{renderSquare(1)}</div>

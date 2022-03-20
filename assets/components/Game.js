@@ -16,14 +16,12 @@ const Game = () => {
     const handleClickGameTwoPlayers = () => {
         createNewGame();
         setPlayerVs("player");
-        setNewGame(!newGame);
 
     }
 
     const handleClickGameVsComputer = () => {
         createNewGame();
         setPlayerVs("computer");
-        setNewGame(!newGame);
     }
 
     const incrementXWon = () => {
