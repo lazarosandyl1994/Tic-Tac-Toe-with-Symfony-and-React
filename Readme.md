@@ -37,7 +37,7 @@ por el proceso de análisis de la misma.
    para crear un nuevo juego de un jugador(*en este caso el jugador X*) contra la computadora
    (*en este caso el jugador O*).
 
-   ![alt text for screen readers](./assets/images/pantallaInicial.png "Pantalla Inicial")
+![alt text for screen readers](./assets/images/pantallaInicial.png "Pantalla Inicial")
 
 2. Una vez que se inicie el juego, en cualquiera de sus dos modalidades se mostrará
 una notificación como la de la siguiente imagen indicando que ya un nuevo juego fue
@@ -48,7 +48,7 @@ persistido en la base de datos.
 3. A medida que se va jugando se puede ver en la parte inferior del tablero de juego
 un resumen del desempeño histórico de ambos jugadores e inmediatamente debajo el turno
 del jugador actual. Todo esto se actualiza en tiempo real.
-   ![alt text for screen readers](./assets/images/transcursodelJuego.png "Transcurso del Juego")
+![alt text for screen readers](./assets/images/transcursodelJuego.png "Transcurso del Juego")
 
 4. Una vez que termina el juego, se muestra una notificación indicando que el juego
 finalizó con el resultado del mismo y si encima de este resultado se intenta jugar nos
@@ -61,16 +61,33 @@ lanza un error:
 para volver a jugar el cual nos llevará a la pantalla inicial.
 
 5. Si intentamos jugar una casilla por segunda vez nos lanza un error:
-   ![alt text for screen readers](./assets/images/casillaJugada.png "Casilla jugada anteriormente")
+![alt text for screen readers](./assets/images/casillaJugada.png "Casilla jugada anteriormente")
 
 ### Requisitos mínimos del sistema operativo para desplegar la aplicación
 * PHP >= 7.4.6
 * Composer >= 2.0.13
-* NodeJS >= 14.17.1 || Yarn >= 1.22.17 (Recomendado)
-
+* NodeJS >= 14.17.1 || Yarn >= 1.22.17 (Recomendado) <span style="color:red">[ Opcional ]: solo si queremos hacer modificaciones al código Javascript, sino solo tenemos que usar el código ya generado para el ambiente de producción que ya se encuentra disponible en el repo sin previa configuración.</span>
+* Symfony CLI >= v4.28.1 <span style="color:red">[ Opcional ]: solo si queremos desplegar el proyecto en el server de prueba local provisto por Symfony.</span>
 * MariaDB >= 10.4.11
 * Apache >= 2.4.43
 
 ### Instrucciones para el despliegue de la aplicación
-1. Crear una Base de Datos llamada: test_hiberus
-2. Nos ubicamos en la carpeta raíz de la aplicación y corremos el comando:```composer install```
+1. Iniciar los servicios de MYSQL y Apache.
+2. Crear una Base de Datos llamada: test_hiberus y correr el fichero dentro de 
+./sqldump/test_hiberus.sql en dicha Base de Datos.
+3. Crear una Base de Datos llamada: test_hiberus_test (para los test funcionales) y correr el fichero dentro de
+   ./sqldump/test_hiberus_test.sql en dicha Base de Datos.
+4. Aquí se asume que el usuario de la Base de Datos es root, que la contraseña es vacía y que MySQL corre por el puerto 3306.
+5. En la raíz de la aplicación corremos el comando:```composer install```
+6. Asumiendo que se está desplegando el proyecto en un entorno con Apache (puerto 80) y MySQL (tipo Xampp o Lampp) debemos
+configurar el `hosts`(por ejemplo a `hiberus.test`) y posteriormente configurar el virtual host(`httpd-vhosts.conf`) con una configuración similar a la de la siguiente imagen extrapolándolo al Sistema Operativo que estemos usando.
+
+![alt text for screen readers](./assets/images/httpd-vhosts.png "httpd-vhosts.conf")
+6.1 Posteriormente debemos reiniciar el servicio de Apache y poner en el navegador la url http://hiberus.test 
+7. Asumiendo que estemos desplegando el proyecto en un entorno local con el servidor de prueba de Symfony, bastará con correr el comando:```symfony server:start``` y navegar hacia la URL que nos indica el propio servidor de prueba.
+
+### Correr los Tests
+##### El proyecto tiene configurado un grupo de Tests que podemos encontrar en el directorio `tests`
+1. Para ejecutar todos los Tests podemos ejecutar el comando: `php vendor/bin/phpunit`
+2. Para ejecutar solo los tests unitarios podemos ejecutar el comando: `php vendor/bin/phpunit --testsuite Unit`
+3. Para ejecutar solo los tests funcionales podemos ejecutar el comando: `php vendor/bin/phpunit --testsuite Functional`
