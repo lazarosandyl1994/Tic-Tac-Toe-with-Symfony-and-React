@@ -100,7 +100,7 @@ class AIGameService extends GameService
     {
         $availableMoves = [];
         for ($i = 0; $i < 9; $i++) {
-            if ($cells[$i] != "X" && $cells[$i] != "O") {
+            if ($cells[$i] !== "X" && $cells[$i] !== "O") {
                 $availableMoves[] = $i;
             }
         }
