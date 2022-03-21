@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 const Board = (props) => {
     const [squares, setSquares] = useState([]);
     const [status, setStatus] = useState("Turno del jugador X");
+    const [endedGame, setEndedGame] = useState(false);
 
     const handleClick = (cellIndex) => {
         axios.patch('/api/' + props.gameIndex, {cell: cellIndex, playVs: props.playVs})
@@ -109,6 +110,7 @@ const Board = (props) => {
                     })
                     break;
             }
+            setEndedGame(true);
         }
     }
 
@@ -158,6 +160,12 @@ const Board = (props) => {
                 </div>
             </div>
             <h3 className="mt-15">{status}</h3>
+            { endedGame &&
+                <div className="mt-15">
+                    <button className="button mr-15" onClick={props.resetGame}>Jugar de nuevo</button>
+                </div>
+            }
+
         </div>
     );
 

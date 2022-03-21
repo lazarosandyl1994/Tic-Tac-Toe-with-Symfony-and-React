@@ -36,6 +36,10 @@ const Game = () => {
         setDraws(draws + 1);
     }
 
+    const resetGame = () => {
+        setNewGame(true);
+    }
+
     const createNewGame = () => {
         axios.post('/api', {})
             .then(function (response) {
@@ -81,6 +85,7 @@ const Game = () => {
                         draws={draws}
                         incrementD={() => incrementDraws()}
                         playVs={playerVs}
+                        resetGame={() => resetGame()}
                     />
             }
         </div>
