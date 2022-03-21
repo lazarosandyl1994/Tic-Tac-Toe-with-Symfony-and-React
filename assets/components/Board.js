@@ -11,71 +11,17 @@ const Board = (props) => {
         axios.patch('/api/' + props.gameIndex, {cell: cellIndex, playVs: props.playVs})
             .then(function (response) {
 
-                if (response.data.next) {
-                    setStatus("Turno del jugador " + response.data.next);
-                }
+                updateGameStatusIfNextTurn(response);
 
-                if (response.data.status === 404) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error, al parecer el juego no se pudo crear correctamente. Inicie uno nuevo!',
-                        showConfirmButton: true
-                    })
-                }
+                notifyIfGameWasNotCreatedSuccessfully(response);
 
-                if (response.data.status === 400) {
-                    const title = response.data.winner ? 'Error, ya ganó el jugador ' + response.data.winner : 'Error, el juego ya terminó en empate';
-                    Swal.fire({
-                        icon: 'error',
-                        title: title,
-                        showConfirmButton: true
-                    })
-                }
+                notifyIfGameIsAlreadyFinished(response);
 
-                if (response.data.canBePlayed === false) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Esta casillada ya ha sido jugada',
-                        showConfirmButton: true
-                    })
-                }
+                notifyIfCanNotBePlayedMove(response);
 
-                if (response.data.winner !== '-' && response.data.canBePlayed === true) {
+                notifyWhoWonTheGame(response);
 
-                    switch (response.data.winner) {
-                        case 'X':
-                            setStatus('Ganó el jugador X');
-                            props.incrementX();
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Ganó el jugador X',
-                                showConfirmButton: true
-                            })
-                            break;
-                        case 'O':
-                            setStatus('Ganó el jugador O');
-                            props.incrementO();
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Ganó el jugador O',
-                                showConfirmButton: true
-                            })
-                            break;
-                        default:
-                            setStatus('El juego terminó en empate');
-                            props.incrementD();
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'El juego terminó en empate',
-                                showConfirmButton: true
-                            })
-                            break;
-                    }
-                }
-
-                if (response.data.cells) {
-                    setSquares(response.data.cells);
-                }
+                updateCellsIfPossible(response);
             })
             .catch(function (error) {
                 Swal.fire({
@@ -84,6 +30,96 @@ const Board = (props) => {
                     showConfirmButton: true
                 })
             });
+    }
+
+    const updateGameStatusIfNextTurn = (response) => {
+        if (response.data.next) {
+            setStatus("Turno del jugador " + response.data.next);
+        }
+    }
+
+    const notifyIfGameWasNotCreatedSuccessfully = (response) => {
+        if (response.data.status === 404) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error, al parecer el juego no se pudo crear correctamente. Inicie uno nuevo!',
+                showConfirmButton: true
+            })
+        }
+    }
+
+    const notifyIfGameIsAlreadyFinished = (response) => {
+        if (response.data.status === 400) {
+            const title = response.data.winner ? 'Error, ya ganó el jugador ' + response.data.winner : 'Error, el juego ya terminó en empate';
+            Swal.fire({
+                icon: 'error',
+                title: title,
+                showConfirmButton: true
+            })
+        }
+    }
+
+    const canBePlayedMove = (response) => {
+        return response.data.canBePlayed === true;
+    }
+
+    const canNotBePlayedMove = (response) => {
+        return response.data.canBePlayed === false;
+    }
+
+    const notifyIfCanNotBePlayedMove = (response) => {
+        if (canNotBePlayedMove(response)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Esta casillada ya ha sido jugada',
+                showConfirmButton: true
+            })
+        }
+    }
+
+    const isThereAlreadyAWinner = (response) => {
+        return response.data.winner !== '-';
+    }
+
+    function notifyWhoWonTheGame(response) {
+        if (isThereAlreadyAWinner(response) && canBePlayedMove(response)) {
+
+            switch (response.data.winner) {
+                case 'X':
+                    setStatus('Ganó el jugador X');
+                    props.incrementX();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Ganó el jugador X',
+                        showConfirmButton: true
+                    })
+                    break;
+                case 'O':
+                    setStatus('Ganó el jugador O');
+                    props.incrementO();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Ganó el jugador O',
+                        showConfirmButton: true
+                    })
+                    break;
+                default:
+                    setStatus('El juego terminó en empate');
+                    props.incrementD();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'El juego terminó en empate',
+                        showConfirmButton: true
+                    })
+                    break;
+            }
+        }
+    }
+
+    const updateCellsIfPossible = (response) => {
+        if (response.data.cells) {
+            setSquares(response.data.cells);
+        }
     }
 
     const renderSquare = (cellIndex) => {
