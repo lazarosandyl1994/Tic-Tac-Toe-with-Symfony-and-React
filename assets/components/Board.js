@@ -24,11 +24,7 @@ const Board = (props) => {
                 updateCellsIfPossible(response);
             })
             .catch(function (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error al actualizar el estado del juego!',
-                    showConfirmButton: true
-                })
+                notifyErrorUpdatingGame();
             });
     }
 
@@ -120,6 +116,14 @@ const Board = (props) => {
         if (response.data.cells) {
             setSquares(response.data.cells);
         }
+    }
+
+    const notifyErrorUpdatingGame = () => {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error al actualizar el estado del juego!',
+            showConfirmButton: true
+        })
     }
 
     const renderSquare = (cellIndex) => {
