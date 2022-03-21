@@ -37,7 +37,7 @@ por el proceso de análisis de la misma.
 * NodeJS >= 14.17.1 || Yarn >= 1.22.17 (Recomendado) <span style="color:red">[ Opcional ]: solo si queremos hacer modificaciones al código Javascript, sino solo tenemos que usar el código ya generado para el ambiente de producción que ya se encuentra disponible en el repo sin previa configuración.</span>
 * Symfony CLI >= v4.28.1 <span style="color:red">[ Opcional ]: solo si queremos desplegar el proyecto en el server de prueba local provisto por Symfony.</span>
 * MariaDB >= 10.4.11
-* Apache >= 2.4.43
+* Apache >= 2.4.43 <span style="color:red">[ Opcional ]: solo si queremos desplegar el proyecto en un server diferente del server de prueba local provisto por Symfony.</span> 
 
 ## 3. Instrucciones para el despliegue de la aplicación
 1. Una vez que hayamos descargado el proyecto debemos iniciar los servicios de MYSQL y Apache.
