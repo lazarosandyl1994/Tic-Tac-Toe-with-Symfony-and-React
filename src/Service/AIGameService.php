@@ -12,8 +12,6 @@ class AIGameService extends GameService
 
     public function updateGame(Request $request, Game $currentGame): array
     {
-        $content = json_decode($request->getContent());
-
         if ($this->isThereAWinner($currentGame) || $this->allCellsAreFilled($currentGame)) {
             return [
                 'status' => 400,
@@ -22,8 +20,8 @@ class AIGameService extends GameService
             ];
         }
 
-        if ($canBePlayed = $this->canBePlayedMove($currentGame, $content->cell)) {
-            $currentGame->setCells($this->fillCell($currentGame, $content->cell, $currentGame->getNext()));
+        if ($canBePlayed = $this->canBePlayedMove($currentGame, $this->getAttribute($request, "cell"))) {
+            $currentGame->setCells($this->fillCell($currentGame, $this->getAttribute($request, "cell"), $currentGame->getNext()));
             if ($this->isThereAWinner($currentGame)) {
                 $currentGame->setWinner("X");
             } else if ($this->allCellsAreFilled($currentGame)) {

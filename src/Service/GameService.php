@@ -4,10 +4,12 @@ namespace App\Service;
 
 use App\Entity\Game;
 use App\Repository\GameRepository;
+use App\Traits\TranslateRequest;
 use Symfony\Component\HttpFoundation\Request;
 
 class GameService
 {
+    use TranslateRequest;
     /**
      * @var GameRepository
      */
@@ -134,8 +136,6 @@ class GameService
      */
     public function updateGame(Request $request, Game $currentGame): array
     {
-        $content = json_decode($request->getContent());
-
         if($this->isThereAWinner($currentGame) || $this->allCellsAreFilled($currentGame)) {
             return [
                 'status' => 400,
@@ -144,8 +144,8 @@ class GameService
             ];
         }
 
-        if ($canBePlayed = $this->canBePlayedMove($currentGame, $content->cell)) {
-            $currentGame->setCells($this->fillCell($currentGame, $content->cell, $currentGame->getNext()));
+        if ($canBePlayed = $this->canBePlayedMove($currentGame, $this->getAttribute($request, "cell"))) {
+            $currentGame->setCells($this->fillCell($currentGame, $this->getAttribute($request, "cell"), $currentGame->getNext()));
             $currentGame->toogleNext();
         }
 
