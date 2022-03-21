@@ -73,7 +73,7 @@ class GameService
      * @param String $cellType
      * @return string
      */
-    public function formatCells(Game $currentGame, int $cell, string $cellType): string
+    public function fillCell(Game $currentGame, int $cell, string $cellType): string
     {
         $currentGame = $this->toArray($currentGame->getCells());
         for ($i = 0; $i < 9; $i++) {
@@ -116,7 +116,7 @@ class GameService
      * @param Request $request
      * @return array
      */
-    public function playMove(int $id, Request $request, bool $vsAI = false): array
+    public function playMove(int $id, Request $request): array
     {
         $currentGame = $this->gameRepository->find($id);
 
@@ -145,7 +145,7 @@ class GameService
         }
 
         if ($canBePlayed = $this->canBePlayedMove($currentGame, $content->cell)) {
-            $currentGame->setCells($this->formatCells($currentGame, $content->cell, $currentGame->getNext()));
+            $currentGame->setCells($this->fillCell($currentGame, $content->cell, $currentGame->getNext()));
             $currentGame->toogleNext();
         }
 

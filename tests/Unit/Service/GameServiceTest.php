@@ -67,7 +67,48 @@ class GameServiceTest extends GameContextUnitTestCase
         $this->assertArrayHasKey('draws', $data);
     }
 
+    public function testCanFillCells(): void
+    {
+        $game = GameStub::create();
 
+        $this->assertIsString($this->service->fillCell($game, 1, 'x'));
+    }
+
+    public function testCanDetectAOWonGame(): void
+    {
+        $game = GameStub::createOWonGame();
+
+        $this->assertEquals("O", $this->service->isThereAWinner($game));
+    }
+
+    public function testCanDetectAXWonGame(): void
+    {
+        $game = GameStub::createXWonGame();
+
+        $this->assertEquals("X", $this->service->isThereAWinner($game));
+    }
+
+    public function testCanDetectADrawGame(): void
+    {
+        $game = GameStub::createDrawGame();
+
+        $this->assertNull($this->service->isThereAWinner($game));
+    }
+
+
+    public function testCanConvertStringCellsToArray(): void
+    {
+        $game = GameStub::create();
+
+        $this->assertIsArray($this->service->toArray($game->getCells()));
+    }
+
+    public function testCanConvertArrayCellsToString(): void
+    {
+        $game = GameStub::create();
+
+        $this->assertIsString($this->service->toString(str_split($game->getCells())));
+    }
 
 
 

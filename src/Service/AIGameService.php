@@ -7,8 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AIGameService extends GameService
 {
-    var $huPlayer = "X";
-    var $aiPlayer = "O";
+    private $huPlayer = "X";
+    private $aiPlayer = "O";
 
     public function updateGame(Request $request, Game $currentGame): array
     {
@@ -23,14 +23,14 @@ class AIGameService extends GameService
         }
 
         if ($canBePlayed = $this->canBePlayedMove($currentGame, $content->cell)) {
-            $currentGame->setCells($this->formatCells($currentGame, $content->cell, $currentGame->getNext()));
+            $currentGame->setCells($this->fillCell($currentGame, $content->cell, $currentGame->getNext()));
             if ($this->isThereAWinner($currentGame)) {
                 $currentGame->setWinner("X");
             } else if ($this->allCellsAreFilled($currentGame)) {
                 $currentGame->setWinner("D");
             } else {
                 $cell = $this->minimax($this->toArray($currentGame->getCells(), true), $this->aiPlayer);
-                $currentGame->setCells($this->formatCells($currentGame, $cell['index'], $this->aiPlayer));
+                $currentGame->setCells($this->fillCell($currentGame, $cell['index'], $this->aiPlayer));
                 if ($this->isThereAWinner($currentGame)) {
                     $currentGame->setWinner("O");
                 } else if ($this->allCellsAreFilled($currentGame)) {
