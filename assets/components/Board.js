@@ -15,27 +15,29 @@ const Board = (props) => {
                     setStatus("Turno del jugador " + response.data.next);
                 }
 
-                if (response.data.status && response.data.status === 404) {
+                if (response.data.status === 404) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error, al parecer el juego no se pudo crear correctamente. Inicie uno nuevo!',
                         showConfirmButton: true
                     })
-                    return;
                 }
 
-                if (response.data.status && response.data.status === 400) {
+                if (response.data.status === 400) {
                     const title = response.data.winner ? 'Error, ya ganó el jugador ' + response.data.winner : 'Error, el juego ya terminó en empate';
                     Swal.fire({
                         icon: 'error',
                         title: title,
                         showConfirmButton: true
                     })
-                    return;
                 }
 
-                if (response.data.winner !== '-' && response.data.canBePlayed === false) {
-                    return;
+                if (response.data.canBePlayed === false) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Esta casillada ya ha sido jugada',
+                        showConfirmButton: true
+                    })
                 }
 
                 if (response.data.winner !== '-' && response.data.canBePlayed === true) {
@@ -71,7 +73,9 @@ const Board = (props) => {
                     }
                 }
 
-                setSquares(response.data.cells);
+                if (response.data.cells) {
+                    setSquares(response.data.cells);
+                }
             })
             .catch(function (error) {
                 Swal.fire({
